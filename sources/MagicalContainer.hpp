@@ -16,16 +16,28 @@ namespace ariel {
     class MagicalContainer {
     private:
         std::vector<int> container;
+        std::vector<int*> containerAscending;
+        std::vector<int*> containerPrime;
+        std::vector<int*> containerSide;
 
     public:
 
         MagicalContainer();
+        auto getElementIterator(int element);
+
+        auto getElementPointerIterator(auto element, std::vector<int*> containerPointer);
+
+        void insertElementPointerAscending(int* element);
+
+        void ChangeContainerSide();
 
         void addElement(int element);
 
         void removeElement(int element);
 
         int size() const;
+
+        bool isPrime(int number);
 
         class AscendingIterator {
         private:

@@ -13,7 +13,7 @@ namespace ariel {
 
     // Move constructor
     MagicalContainer::PrimeIterator::PrimeIterator(PrimeIterator &&other) noexcept : container(other.container), currentIndex(other.currentIndex) {
-    }
+}
 
     // Destructor
     MagicalContainer::PrimeIterator::~PrimeIterator(){
@@ -21,43 +21,52 @@ namespace ariel {
     }
 
     MagicalContainer::PrimeIterator &MagicalContainer::PrimeIterator::operator=(const PrimeIterator &other){
+        if (this != &other) {
+//            container = other.container;
+            currentIndex = other.currentIndex;
+        }
         return *this;
     }
 
     // Move assignment operator
     MagicalContainer::PrimeIterator &MagicalContainer::PrimeIterator::operator=(PrimeIterator &&other) noexcept {
+        if (this != &other) {
+//            container = other.container;
+            currentIndex = other.currentIndex;
+        }
         return *this;
     }
 
     bool MagicalContainer::PrimeIterator::operator==(const PrimeIterator &other) const{
-        return false;
+        return currentIndex == other.currentIndex;
     }
 
     bool MagicalContainer::PrimeIterator::operator!=(const PrimeIterator &other) const{
-        return false;
+        return currentIndex != other.currentIndex;
     }
 
     bool MagicalContainer::PrimeIterator::operator>(const PrimeIterator &other) const{
-        return false;
+        return currentIndex > other.currentIndex;
     }
 
     bool MagicalContainer::PrimeIterator::operator<(const PrimeIterator &other) const{
-        return false;
+        return currentIndex < other.currentIndex;
     }
 
     int MagicalContainer::PrimeIterator::operator*() const{
-        return 0;
+        return *container.containerPrime[static_cast<std::vector<int>::size_type>(currentIndex)];
     }
 
     MagicalContainer::PrimeIterator &MagicalContainer::PrimeIterator::operator++(){
+        ++currentIndex;
         return *this;
     }
 
     MagicalContainer::PrimeIterator MagicalContainer::PrimeIterator::begin() const{
-        return *this;
+        return PrimeIterator(container, 0);
     }
 
     MagicalContainer::PrimeIterator MagicalContainer::PrimeIterator::end() const{
-        return *this;
+        return PrimeIterator(container, container.containerPrime.size());
     }
 } // ariel

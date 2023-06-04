@@ -8,12 +8,11 @@ namespace ariel {
 
     // Copy constructor
     MagicalContainer::SideCrossIterator::SideCrossIterator(const MagicalContainer::SideCrossIterator &other) : container(other.container),
-                                                                                                               currentIndex(
-                                                                                                                       other.currentIndex) {}
+                                                                                                   currentIndex(
+                                                                                                           other.currentIndex) {}
 
     // Move constructor
-    MagicalContainer::SideCrossIterator::SideCrossIterator(SideCrossIterator &&other) noexcept : container(other.container), currentIndex(other.currentIndex) {
-    }
+    MagicalContainer::SideCrossIterator::SideCrossIterator(SideCrossIterator &&other) noexcept : container(other.container), currentIndex(other.currentIndex) {}
 
     // Destructor
     MagicalContainer::SideCrossIterator::~SideCrossIterator(){
@@ -21,43 +20,52 @@ namespace ariel {
     }
 
     MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operator=(const SideCrossIterator &other){
+        if (this != &other) {
+//            container = other.container;
+            currentIndex = other.currentIndex;
+        }
         return *this;
     }
 
     // Move assignment operator
     MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operator=(SideCrossIterator &&other) noexcept {
+        if (this != &other) {
+//            container = other.container;
+            currentIndex = other.currentIndex;
+        }
         return *this;
     }
 
     bool MagicalContainer::SideCrossIterator::operator==(const SideCrossIterator &other) const{
-        return false;
+        return currentIndex == other.currentIndex;
     }
 
     bool MagicalContainer::SideCrossIterator::operator!=(const SideCrossIterator &other) const{
-        return false;
+        return currentIndex != other.currentIndex;
     }
 
     bool MagicalContainer::SideCrossIterator::operator>(const SideCrossIterator &other) const{
-        return false;
+        return currentIndex > other.currentIndex;
     }
 
     bool MagicalContainer::SideCrossIterator::operator<(const SideCrossIterator &other) const{
-        return false;
+        return currentIndex < other.currentIndex;
     }
 
     int MagicalContainer::SideCrossIterator::operator*() const{
-        return 0;
+        return *container.containerSide[static_cast<std::vector<int>::size_type>(currentIndex)];
     }
 
     MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operator++(){
+        ++currentIndex;
         return *this;
     }
 
     MagicalContainer::SideCrossIterator MagicalContainer::SideCrossIterator::begin() const{
-        return *this;
+        return SideCrossIterator(container, 0);
     }
 
     MagicalContainer::SideCrossIterator MagicalContainer::SideCrossIterator::end() const{
-        return *this;
+        return SideCrossIterator(container, container.containerSide.size());
     }
 } // ariel
