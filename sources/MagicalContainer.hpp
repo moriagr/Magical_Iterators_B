@@ -25,7 +25,7 @@ namespace ariel {
         MagicalContainer();
         auto getElementIterator(int element);
 
-        auto getElementPointerIterator(auto element, std::vector<int*> containerPointer);
+        auto getElementPointerIterator(int *element, std::vector<int*> containerPointer);
 
         void insertElementPointerAscending(int* element);
 
