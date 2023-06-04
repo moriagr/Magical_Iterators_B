@@ -33,11 +33,11 @@ namespace ariel {
         return this->container.end() ;
     }
 
-    auto MagicalContainer::getElementPointerIterator(int *element, std::vector<int*> containerPointer){
+    auto MagicalContainer::getElementPointerIterator(int element, std::vector<int*> containerPointer){
         auto endIterator = containerPointer.end();
         for (auto i = containerPointer.begin(); i != endIterator; ++i) {
-            cout<<*i  << element<<endl;
-            if (*i  == element) {
+            cout<<(**i)  <<":"<< element<<endl;
+            if (**i  == element) {
                 return i;
             }
         }
@@ -46,11 +46,20 @@ namespace ariel {
 
     // Helper function to insert an element's pointer at the correct position in containerAscending
     void MagicalContainer::insertElementPointerAscending(int* element) {
-        auto position = std::lower_bound(this->containerAscending.begin(), this->containerAscending.end(), element,
-                                         [](const int* a, const int* b) {
-                                             return *a < *b;
-                                         });
-        this->containerAscending.insert(position, element);
+        // Find the correct insertion position in containerAscending
+//        if(this->containerAscending.begin() == this->containerAscending.end() || this->containerAscending.size()==0){
+            this->containerAscending.push_back(element);
+            return;
+//        }
+//        auto position = containerAscending.begin();
+//        for (; position != containerAscending.end(); ++position) {
+//            if (**position >= *element) {
+//                break;
+//            }
+//        }
+//
+//        // Insert the pointer element at the correct position
+//        containerAscending.insert(position, element);
     }
 
     void MagicalContainer::ChangeContainerSide() {
@@ -62,7 +71,6 @@ namespace ariel {
 
         auto start = this->container.begin();
         auto end = this->container.end() - 1;
-//        *start
         while (start <= end) {
             this->containerSide.push_back(&(*start++));
             if (start <= end) {
@@ -74,15 +82,24 @@ namespace ariel {
 
     // Add an element to the container
     void MagicalContainer::addElement(int element) {
+        if(container.empty()){
+            this->containerAscending.clear();
+        }
         this->container.push_back(element);
 
-        auto insertionContainer = this->container.back();
         // Check if element is prime:
-        if(isPrime(insertionContainer)){
-            this->containerPrime.push_back(&insertionContainer);
+        if(isPrime(this->container.back())){
+            this->containerPrime.push_back(&this->container.back());
         }
+
         // Add element to ascending:
-        insertElementPointerAscending(&insertionContainer);
+       // Add the pointer to the element to the containerAscending vector
+        auto position = std::lower_bound(containerAscending.begin(), containerAscending.end(), &container.back(),
+                                         [](const int* a, const int* b) {
+                                             return *a < *b;
+                                         });
+        containerAscending.insert(position, &container.back());
+
         // Add element to side cross:
         ChangeContainerSide();
     }
@@ -91,7 +108,7 @@ namespace ariel {
     void MagicalContainer::removeElement(int element) {
         auto index = getElementIterator(element);
         if(index != this->container.end()){
-            auto it = getElementPointerIterator(&element, this->containerAscending);
+            auto it = getElementPointerIterator(element, this->containerAscending);
 
 //            auto it = std::find(this->containerAscending.begin(), this->containerAscending.end(), element);
             if (it != this->containerAscending.end()) {
@@ -100,7 +117,7 @@ namespace ariel {
 
             // Check if element is prime:
             if(isPrime(element)){
-                auto it = getElementPointerIterator(&element, this->containerPrime);
+                auto it = getElementPointerIterator(element, this->containerPrime);
 //                auto it = std::find(this->containerPrime.begin(), this->containerPrime.end(), &element);
                 if (it != this->containerPrime.end()) {
                     this->containerPrime.erase(it);

@@ -54,7 +54,8 @@ namespace ariel {
     }
 
     int MagicalContainer::AscendingIterator::operator*() const{
-        return *container.containerAscending[static_cast<std::vector<int>::size_type>(currentIndex)];
+        cout <<"-----"<<container.containerAscending[static_cast<std::vector<int>::size_type>(currentIndex)]<<endl;
+        return *(container.containerAscending[static_cast<std::vector<int>::size_type>(currentIndex)]);
     }
 
     MagicalContainer::AscendingIterator &MagicalContainer::AscendingIterator::operator++(){
