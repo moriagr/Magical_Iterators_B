@@ -16,7 +16,7 @@ namespace ariel {
     class MagicalContainer {
     private:
         std::vector<int> container;
-        std::vector<int*> containerAscending;
+//        std::vector<int*> containerAscending;
         std::vector<int*> containerPrime;
         std::vector<int*> containerSide;
 
@@ -27,7 +27,9 @@ namespace ariel {
 
         auto getElementPointerIterator(int element, std::vector<int*> containerPointer);
 
-        void insertElementPointerAscending(int* element);
+        void sortOriginalArray(int element);
+
+        void sortPrimeNumbers();
 
         void ChangeContainerSide();
 

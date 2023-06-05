@@ -4,7 +4,7 @@
 
 namespace ariel {
 
-    MagicalContainer::MagicalContainer(): container(), containerAscending(), containerPrime(), containerSide(){ }
+    MagicalContainer::MagicalContainer(): container(), containerPrime(), containerSide(){ }
 
     bool MagicalContainer::isPrime(int number){
         bool is_prime = true;
@@ -36,7 +36,6 @@ namespace ariel {
     auto MagicalContainer::getElementPointerIterator(int element, std::vector<int*> containerPointer){
         auto endIterator = containerPointer.end();
         for (auto i = containerPointer.begin(); i != endIterator; ++i) {
-            cout<<(**i)  <<":"<< element<<endl;
             if (**i  == element) {
                 return i;
             }
@@ -45,21 +44,16 @@ namespace ariel {
     }
 
     // Helper function to insert an element's pointer at the correct position in containerAscending
-    void MagicalContainer::insertElementPointerAscending(int* element) {
-        // Find the correct insertion position in containerAscending
-//        if(this->containerAscending.begin() == this->containerAscending.end() || this->containerAscending.size()==0){
-            this->containerAscending.push_back(element);
-            return;
-//        }
-//        auto position = containerAscending.begin();
-//        for (; position != containerAscending.end(); ++position) {
-//            if (**position >= *element) {
-//                break;
-//            }
-//        }
-//
-//        // Insert the pointer element at the correct position
-//        containerAscending.insert(position, element);
+    void MagicalContainer::sortOriginalArray(int element) {
+        auto position = this->container.begin();
+        for (; position != this->container.end(); ++position) {
+            if (*position >= element) {
+                break;
+            }
+        }
+
+        // Insert the pointer element at the correct position
+        this->container.insert(position, element);
     }
 
     void MagicalContainer::ChangeContainerSide() {
@@ -79,26 +73,25 @@ namespace ariel {
         }
     }
 
+    void MagicalContainer::sortPrimeNumbers() {
+        auto position = this->container.begin();
+        for (; position != this->container.end(); ++position) {
+            if (isPrime(*position) ){
+                this->containerPrime.push_back(&(*position));
+            }
+        }
+    }
+
+
+
 
     // Add an element to the container
     void MagicalContainer::addElement(int element) {
-        if(container.empty()){
-            this->containerAscending.clear();
-        }
-        this->container.push_back(element);
-
+        sortOriginalArray(element);
         // Check if element is prime:
         if(isPrime(this->container.back())){
             this->containerPrime.push_back(&this->container.back());
         }
-
-        // Add element to ascending:
-       // Add the pointer to the element to the containerAscending vector
-        auto position = std::lower_bound(containerAscending.begin(), containerAscending.end(), &container.back(),
-                                         [](const int* a, const int* b) {
-                                             return *a < *b;
-                                         });
-        containerAscending.insert(position, &container.back());
 
         // Add element to side cross:
         ChangeContainerSide();
@@ -108,23 +101,16 @@ namespace ariel {
     void MagicalContainer::removeElement(int element) {
         auto index = getElementIterator(element);
         if(index != this->container.end()){
-            auto it = getElementPointerIterator(element, this->containerAscending);
-
-//            auto it = std::find(this->containerAscending.begin(), this->containerAscending.end(), element);
-            if (it != this->containerAscending.end()) {
-                this->containerAscending.erase(it);
-            }
 
             // Check if element is prime:
             if(isPrime(element)){
                 auto it = getElementPointerIterator(element, this->containerPrime);
-//                auto it = std::find(this->containerPrime.begin(), this->containerPrime.end(), &element);
                 if (it != this->containerPrime.end()) {
                     this->containerPrime.erase(it);
                 }
             }
 
-            // Remove element to ascending:
+            // Remove element:
             this->container.erase(index);
 
             // Remove element to side cross:
