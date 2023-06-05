@@ -1,6 +1,4 @@
-
 #include "MagicalContainer.hpp"
-#include <algorithm>
 
 namespace ariel {
 
@@ -74,25 +72,34 @@ namespace ariel {
     }
 
     void MagicalContainer::sortPrimeNumbers() {
-        auto position = this->container.begin();
-        for (; position != this->container.end(); ++position) {
-            if (isPrime(*position) ){
-                this->containerPrime.push_back(&(*position));
-            }
+        this->containerPrime.clear();
+
+        if (this->container.empty()) {
+            return;
         }
+        auto start = this->container.begin();
+        auto end = this->container.end() - 1;
+        while (start <= end) {
+            if (isPrime(*start) ){
+                this->containerPrime.push_back(&(*start));
+            }
+            start++;
+        }
+//        auto position = this->container.begin();
+//        for (; position != this->container.end(); ++position) {
+//            if (isPrime(*position) ){
+//                this->containerPrime.push_back(&(*position));
+//            }
+//        }
     }
-
-
-
 
     // Add an element to the container
     void MagicalContainer::addElement(int element) {
         sortOriginalArray(element);
         // Check if element is prime:
-        if(isPrime(this->container.back())){
-            this->containerPrime.push_back(&this->container.back());
+        if(isPrime(element)) {
+            sortPrimeNumbers();
         }
-
         // Add element to side cross:
         ChangeContainerSide();
     }
@@ -102,16 +109,12 @@ namespace ariel {
         auto index = getElementIterator(element);
         if(index != this->container.end()){
 
-            // Check if element is prime:
-            if(isPrime(element)){
-                auto it = getElementPointerIterator(element, this->containerPrime);
-                if (it != this->containerPrime.end()) {
-                    this->containerPrime.erase(it);
-                }
-            }
-
             // Remove element:
             this->container.erase(index);
+
+            if(isPrime(element)) {
+                sortPrimeNumbers();
+            }
 
             // Remove element to side cross:
             ChangeContainerSide();
@@ -125,4 +128,4 @@ namespace ariel {
     int MagicalContainer::size() const {
         return this->container.size();
     }
-} // ariel
+}

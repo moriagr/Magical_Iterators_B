@@ -20,16 +20,19 @@ namespace ariel {
     }
 
     MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operator=(const SideCrossIterator &other){
-        if (this != &other) {
+        if (this != &other && (typeid(&other) == typeid(this)) ) {
 //            container = other.container;
             currentIndex = other.currentIndex;
+        }
+        else{
+            throw std::runtime_error("iterators are pointing at different containers");
         }
         return *this;
     }
 
     // Move assignment operator
     MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operator=(SideCrossIterator &&other) noexcept {
-        if (this != &other) {
+        if (this != &other && (typeid(&other) == typeid(this)) ) {
 //            container = other.container;
             currentIndex = other.currentIndex;
         }
@@ -57,8 +60,11 @@ namespace ariel {
     }
 
     MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operator++(){
-        ++currentIndex;
-        return *this;
+        if(this->begin() != this->end()){
+            ++currentIndex;
+            return *this;
+        }
+        throw std::runtime_error("Iterator Increment Beyond End");
     }
 
     MagicalContainer::SideCrossIterator MagicalContainer::SideCrossIterator::begin() const{

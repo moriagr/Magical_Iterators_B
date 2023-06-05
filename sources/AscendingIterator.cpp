@@ -21,16 +21,19 @@ namespace ariel {
     }
 
     MagicalContainer::AscendingIterator &MagicalContainer::AscendingIterator::operator=(const AscendingIterator &other) {
-        if (this != &other) {
-//            container = other.container;
+        if (this != &other && (typeid(&other) == typeid(this)) ) {
             currentIndex = other.currentIndex;
+        }
+
+        else{
+            throw std::runtime_error("iterators are pointing at different containers");
         }
         return *this;
     }
 
     // Move assignment operator
     MagicalContainer::AscendingIterator &MagicalContainer::AscendingIterator::operator=(AscendingIterator &&other) noexcept {
-        if (this != &other) {
+        if (this != &other && (typeid(&other) == typeid(this)) ) {
 //            container = other.container;
             currentIndex = other.currentIndex;
         }
@@ -54,13 +57,15 @@ namespace ariel {
     }
 
     int MagicalContainer::AscendingIterator::operator*() const{
-        cout <<"--"<<container.container[static_cast<std::vector<int>::size_type>(currentIndex)]<<endl;
         return container.container[static_cast<std::vector<int>::size_type>(currentIndex)];
     }
 
     MagicalContainer::AscendingIterator &MagicalContainer::AscendingIterator::operator++(){
-        ++currentIndex;
-        return *this;
+        if(this->begin() != this->end()){
+            ++currentIndex;
+            return *this;
+        }
+        throw std::runtime_error("Iterator Increment Beyond End");
     }
 
     MagicalContainer::AscendingIterator MagicalContainer::AscendingIterator::begin() const{
