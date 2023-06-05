@@ -15,11 +15,6 @@ namespace ariel {
     MagicalContainer::AscendingIterator::AscendingIterator(AscendingIterator &&other) noexcept : container(other.container), currentIndex(other.currentIndex) {
     }
 
-    // Destructor
-    MagicalContainer::AscendingIterator::~AscendingIterator(){
-
-    }
-
     MagicalContainer::AscendingIterator &MagicalContainer::AscendingIterator::operator=(const AscendingIterator &other) {
         if (this != &other && (typeid(&other) == typeid(this)) ) {
             currentIndex = other.currentIndex;
@@ -34,7 +29,7 @@ namespace ariel {
     // Move assignment operator
     MagicalContainer::AscendingIterator &MagicalContainer::AscendingIterator::operator=(AscendingIterator &&other) noexcept {
         if (this != &other && (typeid(&other) == typeid(this)) ) {
-//            container = other.container;
+
             currentIndex = other.currentIndex;
         }
         return *this;
@@ -61,7 +56,7 @@ namespace ariel {
     }
 
     MagicalContainer::AscendingIterator &MagicalContainer::AscendingIterator::operator++(){
-        if(this->begin() != this->end()){
+        if(this->container.container.begin()+currentIndex != this->container.container.end()){
             ++currentIndex;
             return *this;
         }

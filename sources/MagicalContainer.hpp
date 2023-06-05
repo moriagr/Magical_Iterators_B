@@ -25,8 +25,6 @@ namespace ariel {
         MagicalContainer();
         auto getElementIterator(int element);
 
-        auto getElementPointerIterator(int element, std::vector<int*> containerPointer);
-
         void sortOriginalArray(int element);
 
         void sortPrimeNumbers();
@@ -39,7 +37,7 @@ namespace ariel {
 
         int size() const;
 
-        bool isPrime(int number);
+        static bool isPrime(int number);
 
         class AscendingIterator {
         private:
@@ -58,7 +56,7 @@ namespace ariel {
             AscendingIterator(AscendingIterator &&other) noexcept;
 
             // Destructor
-            ~AscendingIterator();
+            ~AscendingIterator() = default;
 
             // Assignment operator
             AscendingIterator &operator=(const AscendingIterator &other);
@@ -100,7 +98,7 @@ namespace ariel {
             SideCrossIterator(SideCrossIterator &&other) noexcept;
 
             // Destructor
-            ~SideCrossIterator();
+            ~SideCrossIterator() = default;
 
             // Assignment operator
             SideCrossIterator &operator=(const SideCrossIterator &other);
@@ -142,7 +140,7 @@ namespace ariel {
             PrimeIterator(PrimeIterator &&other) noexcept;
 
             // Destructor
-            ~PrimeIterator();
+            ~PrimeIterator() = default;
 
             // Assignment operator
             PrimeIterator &operator=(const PrimeIterator &other);

@@ -4,6 +4,7 @@ namespace ariel {
 
     MagicalContainer::MagicalContainer(): container(), containerPrime(), containerSide(){ }
 
+    // This function checks if the given number is prime.
     bool MagicalContainer::isPrime(int number){
         bool is_prime = true;
 
@@ -22,6 +23,7 @@ namespace ariel {
         return is_prime;
     }
 
+    // This function gets the pointer to the given element in the container vector.
     auto MagicalContainer::getElementIterator(int element){
         for (auto i = this->container.begin(); i != this->container.end(); ++i) {
             if (*i  == element) {
@@ -31,19 +33,12 @@ namespace ariel {
         return this->container.end() ;
     }
 
-    auto MagicalContainer::getElementPointerIterator(int element, std::vector<int*> containerPointer){
-        auto endIterator = containerPointer.end();
-        for (auto i = containerPointer.begin(); i != endIterator; ++i) {
-            if (**i  == element) {
-                return i;
-            }
-        }
-        return endIterator; // Return end iterator if element is not found
-    }
-
-    // Helper function to insert an element's pointer at the correct position in containerAscending
+    // This function insert the element into the container array according to the ascending order.
     void MagicalContainer::sortOriginalArray(int element) {
         auto position = this->container.begin();
+
+        // This loop goes over the container vector with complexity of O(n).
+        // It finds the pointer that points to the first value that is bigger or equal to the given element.
         for (; position != this->container.end(); ++position) {
             if (*position >= element) {
                 break;
@@ -54,6 +49,8 @@ namespace ariel {
         this->container.insert(position, element);
     }
 
+    // This function goes over the container element and organize the containerSide vector,
+    // So it will contain pointers to the values in the cross side order.
     void MagicalContainer::ChangeContainerSide() {
         this->containerSide.clear();
 
@@ -63,6 +60,8 @@ namespace ariel {
 
         auto start = this->container.begin();
         auto end = this->container.end() - 1;
+
+        // This loop goes over the container, it takes the first -> last ->second first-> second last and so on
         while (start <= end) {
             this->containerSide.push_back(&(*start++));
             if (start <= end) {
@@ -71,6 +70,8 @@ namespace ariel {
         }
     }
 
+    // This function goes over the container element and organize the containerPrime vector,
+    // So it will contain pointers to the values that are prime numbers from the container vector.
     void MagicalContainer::sortPrimeNumbers() {
         this->containerPrime.clear();
 
@@ -80,26 +81,24 @@ namespace ariel {
         auto start = this->container.begin();
         auto end = this->container.end() - 1;
         while (start <= end) {
+            // Check if the start pointer, points to a number.
+            // if it does, it adds the reference to the containerPrime vector.
             if (isPrime(*start) ){
                 this->containerPrime.push_back(&(*start));
             }
             start++;
         }
-//        auto position = this->container.begin();
-//        for (; position != this->container.end(); ++position) {
-//            if (isPrime(*position) ){
-//                this->containerPrime.push_back(&(*position));
-//            }
-//        }
     }
 
     // Add an element to the container
     void MagicalContainer::addElement(int element) {
+
+        // Add an element to the container, in the correct place.
         sortOriginalArray(element);
-        // Check if element is prime:
-        if(isPrime(element)) {
-            sortPrimeNumbers();
-        }
+
+        // Add element to prime:
+        sortPrimeNumbers();
+
         // Add element to side cross:
         ChangeContainerSide();
     }
@@ -109,14 +108,13 @@ namespace ariel {
         auto index = getElementIterator(element);
         if(index != this->container.end()){
 
-            // Remove element:
+            // Remove element from the original container:
             this->container.erase(index);
 
-            if(isPrime(element)) {
-                sortPrimeNumbers();
-            }
+            // Remove element from side cross:
+            sortPrimeNumbers();
 
-            // Remove element to side cross:
+            // Remove element from side cross:
             ChangeContainerSide();
         }
         else{

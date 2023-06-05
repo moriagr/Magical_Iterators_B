@@ -15,9 +15,9 @@ namespace ariel {
     MagicalContainer::SideCrossIterator::SideCrossIterator(SideCrossIterator &&other) noexcept : container(other.container), currentIndex(other.currentIndex) {}
 
     // Destructor
-    MagicalContainer::SideCrossIterator::~SideCrossIterator(){
-
-    }
+//    MagicalContainer::SideCrossIterator::~SideCrossIterator(){
+//
+//    }
 
     MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operator=(const SideCrossIterator &other){
         if (this != &other && (typeid(&other) == typeid(this)) ) {
@@ -60,7 +60,7 @@ namespace ariel {
     }
 
     MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operator++(){
-        if(this->begin() != this->end()){
+        if(this->container.containerSide.begin() +currentIndex!= this->container.containerSide.end()){
             ++currentIndex;
             return *this;
         }
